@@ -7,3 +7,7 @@ npm run demo, npm run view and npm run docs passed with the fictional seed. Ther
 The landing page passes scripts/rebuild/check-page.mjs midaxo. A local render of the actual Astro route verifies noindex,nofollow, six booking links with the replacement offer and campaign, all three paths, three working demo tabs and no mobile document overflow. The captured outputs are actual runs against the final-demo seed. Leading spaces are preserved so the shared page can parse the aligned headings correctly.
 
 Midaxo source headings are explicitly mapped. The fixture is synthetic and the import covers project records only. No customer export or live customer database was accessed. Reconcile a real authorised export and the required wider records before switching.
+
+The corrected code at commit 2358d603044ce8b202ea6341d2f3e26bfd562652 passed all three jobs in [Actions run 43651267184](https://github.com/Enterprise-DNA-OS/integration-value-for-claude-code/actions/runs/43651267184): Windows PGlite, Ubuntu PGlite and PostgreSQL 16. Each ran the 91-check suite. The embedded jobs also ran the demo and both renderers. The final desktop and mobile preview retained noindex,nofollow, all three demo tabs worked and the corrected headings were visually inspected.
+
+The Landing Pages data push completed at commit 54825fc58be53e32ca9c718ddf40568ccc805da3. The public URL still returned HTTP 404 at the final delivery check; hosted deployment was not observed. The local route renders correctly and remains noindex. This run did not publish the target.
