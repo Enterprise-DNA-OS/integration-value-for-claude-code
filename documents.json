@@ -1,11 +1,48 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "steering-pack",
+    "title": "Integration steering pack",
+    "for_each": "select id,name from acquisitions order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Acquisition",
+        "layout": "record",
+        "sql": "select name,owner,close_date,currency,purpose,access_review,retention_review from acquisitions where id=$1"
+      },
+      {
+        "title": "Day-one readiness",
+        "sql": "select name,workstream,owner,due_date,status,blockers from task_board where acquisition_id=$1 and day_one order by due_date"
+      },
+      {
+        "title": "Workstream delivery",
+        "sql": "select name,workstream,owner,due_date,status,blockers,days_overdue from task_board where acquisition_id=$1 order by due_date"
+      },
+      {
+        "title": "Value delivery",
+        "note": "Amounts stay in each acquisition currency. Missing actuals are unknown, not zero. Accepted totals contain reviewed amounts with completed dependencies.",
+        "sql": "select currency,period,planned_net_cents,reported_net_cents,accepted_net_cents,variance_cents,missing_actuals,held_actuals from benefit_summary where acquisition_id=$1 order by period"
+      },
+      {
+        "title": "Risks and decisions",
+        "sql": "select name,owner,severity,due_date,status,resolution from risks where acquisition_id=$1 order by due_date"
+      },
+      {
+        "title": "Review notes",
+        "sql": "select body,actor,created_at from notes where acquisition_id=$1 order by created_at"
+      }
+    ]
+  },
+  {
+    "name": "benefit-review",
+    "title": "Benefit evidence review",
+    "for_each": "select id,name from acquisitions order by name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded claims",
+        "sql": "select initiative,kind,currency,period,planned_cents,actual_cents,evidence,recorded_by,reviewed_by,accepted from benefit_detail where acquisition_id=$1 order by period,initiative"
+      }
     ]
   }
 ]

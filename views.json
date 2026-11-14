@@ -1,13 +1,40 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Integration Value for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Integration week",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Workstream progress",
+        "sql": "select acquisition,workstream,name,owner,due_date,status,blockers,days_overdue from task_board order by acquisition,due_date"
+      }
+    ]
+  },
+  {
+    "name": "value",
+    "title": "Monthly benefit evidence",
+    "subtitle": "Costs reduce net benefit. Reported and accepted amounts are separate.",
+    "sections": [
+      {
+        "title": "Period totals",
+        "sql": "select acquisition,currency,period,planned_net_cents,reported_net_cents,accepted_net_cents,variance_cents,missing_actuals,held_actuals from benefit_summary order by acquisition,period"
+      },
+      {
+        "title": "Evidence review",
+        "sql": "select acquisition,initiative,currency,period,actual_cents,evidence,reviewed_by,accepted from benefit_detail order by acquisition,period,initiative"
+      }
+    ]
+  },
+  {
+    "name": "attention",
+    "title": "Steering decisions",
+    "sections": [
+      {
+        "title": "Open risks",
+        "sql": "select a.name as acquisition,r.name,r.owner,r.severity,r.due_date from risks r join acquisitions a on a.id=r.acquisition_id where r.status='open' order by r.due_date"
+      },
+      {
+        "title": "Privacy review evidence",
+        "sql": "select * from compliance_attention order by acquisition,rule"
       }
     ]
   }

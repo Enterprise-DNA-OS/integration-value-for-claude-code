@@ -1,115 +1,114 @@
-<h1 align="center">Integration Value for Claude Code</h1>
+# Integration Value for Claude Code
 
-<p align="center">
-  <strong>The open-source post-merger integration system that is just a database and Claude Code.</strong>
-</p>
+Own your acquisition integration records: workstream tasks, dependencies, monthly benefit claims, evidence and steering decisions in one database.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+## Three ways to use it
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Midaxo data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=midaxo">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/midaxo?utm_source=github&utm_medium=readme&utm_campaign=midaxo">How it works</a></td>
-  </tr>
-</table>
+- **Do it yourself:** free MIT source, with Claude Code, Codex, OpenCode or Cursor.
+- **We customise it:** Enterprise DNA maps your exports and builds your fields, rules, screens and connections. One setup fee, then a retainer.
+- **We run it for you:** installed and operated through **Omni by Enterprise DNA**. One setup fee, then a retainer. [Talk to Sam](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=midaxo&utm_medium=readme).
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-midaxo">Instead of Midaxo</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## Start with fictional records
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Integration Value for Claude Code does the job you pay Midaxo for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Midaxo dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Midaxo per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=midaxo).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or newer.
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/integration-value-for-claude-code.git
-cd integration-value-for-claude-code
 npm install
 npm run demo
+npm run integration -- day-one
+npm run integration -- workstreams
+npm run integration -- benefit-detail
+npm run integration -- weekly-review --json
+npm run view
+npm run docs
+npm test
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Two fictional acquisitions include overdue supplier work, a blocked cost-saving claim, accepted benefits, transition costs and a future unreported period. The seed is idempotent. DATABASE_URL selects PostgreSQL; otherwise local PGlite needs no service.
 
-### Use it with your own Postgres or Supabase
+## The integration week
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+Start with /day-one and /blockers. Ask /workstreams who owes a decision. Record claimed benefits with /record-actual, inspect /benefit-detail and use /review-benefit after reviewing evidence. /weekly-review combines task attention, monthly benefit totals and governance flags. /draft-steering-pack writes a local paper. Nothing sends.
 
-## The commands
+Tasks cannot complete without evidence and finished prerequisites. Dependencies reject cycles. Accepted benefits require a closed acquisition, a current or past period, evidence, a different reviewer label and completed linked work. Corrections clear approval; reopened dependencies put benefits back on hold. Costs subtract from savings and revenue. Each acquisition keeps its own currency. Actor labels are not authenticated identities.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+## Ten questions answered by the working build
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+1. Which acquisition has overdue day-one tasks?
+2. Which benefit claims are held by unfinished integration work?
+3. Which completed tasks became blocked after a prerequisite reopened?
+4. What accepted net benefit remains after transition costs?
+5. Which claims changed after a reviewer accepted them?
+6. Which workstreams have stale updates as well as overdue tasks?
+7. Which future periods have plans but no reported actuals?
+8. Which acquisitions need access or retention reviews?
+9. Who recorded and reviewed the evidence behind each accepted amount?
+10. Which source projects imported unchanged, and which would conflict?
 
-## Instead of Midaxo
+These are working analyses you can change, not a claim that Midaxo cannot produce equivalent reports. The value is owning the records and definitions behind them.
 
-<!-- TODO(author): how to bring data across from Midaxo; link docs/replace-midaxo.md -->
+## Bring your history
 
-## Architecture
+The [replace guide](docs/replace-midaxo.md) covers Midaxo Grid-to-Excel project exports, CSV conversion and explicit mapping. One import command loads the selected project records after preview and reconciliation. Task trees, documents and value history need separate mapping. The fixture is synthetic. Keep Midaxo until the required records and workflows are accepted.
 
-```
-integration-value-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+## Commands
 
-## Built for coding agents
+- /help: List commands and their flags.
+- /acquisitions: Review acquisition owners, source stages, actual close dates and currencies.
+- /tasks: Review the workstream task register.
+- /day-one: Check the handover tasks due around acquisition close.
+- /blockers: Find tasks held by unfinished direct or indirect prerequisites.
+- /workstreams: Compare completed, blocked and overdue work by function.
+- /initiatives: Review benefit owners and the work needed to deliver each benefit.
+- /benefits: Compare monthly baseline, reported and accepted net benefits in each currency.
+- /benefit-detail: Read claim evidence, recorder and reviewer before accepting a benefit.
+- /risks: Read the integration risk register and recorded resolutions.
+- /attention: Find overdue work, stale updates, missing owners and late risk decisions.
+- /compliance: Read docs/compliance.md. Report missing purpose and overdue access or retention reviews without claiming legal compliance.
+- /weekly-review: Prepare Monday steering decisions from workstreams, attention, benefits and compliance. Read risks and detail for context.
+- /detail: Read an acquisition and its tasks, benefits, risks and notes before a change.
+- /imports: Reconcile import counts, fingerprints and source files.
+- /audit: Read the operator-labelled change history.
+- /add-acquisition: Register the acquisition with the supplied owner, purpose, currency and actual close date.
+- /close-acquisition: Record the evidenced actual closing date. Do not use an expected close date.
+- /review-governance: Record purpose and next access/retention review dates after an actual review, with a reason.
+- /add-task: Add an integration task with a function, owner and due date.
+- /update-task: Read tasks first. Record a status, owner or due-date change with a reason. Completion requires evidence and finished prerequisites.
+- /depend: Read both tasks, then link a prerequisite within the same acquisition. Cycles are rejected.
+- /add-initiative: Add a saving, revenue or implementation-cost initiative, its owner and optional task dependency.
+- /plan-benefit: Record the original monthly baseline. Amounts are currency units with up to two decimals. Existing baselines cannot be overwritten.
+- /record-actual: Record a monthly actual with its evidence and reason. Corrections clear approval.
+- /review-benefit: Read the claim and evidence. A different reviewer label must accept it after close and completion of linked work. Labels are not authenticated identities.
+- /add-risk: Register the risk, severity, owner and decision deadline.
+- /resolve-risk: Read risks first. Record the actual resolution, never an invented decision.
+- /log: Record the supplied steering decision or review note.
+- /import: Read docs/replace-midaxo.md. Map actual CSV headings, preview with --dry-run, reconcile counts, then import with the operator label.
+- /export: Write a private complete archive in exports/. It includes original source rows and must not be shared publicly.
+- /draft-steering-pack: Read detail and weekly-review. Write a local draft for internal review. Never send it.
+- /customise: Add a field or operating rule through a migration and behavioural checks.
+- /new-view: Add a read-only branded dashboard.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+Every CLI command supports --json. Unknown flags fail. IDs accept prefixes; names match without case. Ambiguous names list candidates and exit 1. All database writes require an actor label.
 
-## Contributing
+## Documents and views
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+Edit brand.json once. npm run docs writes an acquisition steering pack and benefit evidence record for each acquisition. npm run view renders the integration week, monthly values and decision queue. HTML shows currency units; JSON _cents fields are cents. Human output shows currency units. Generated snapshots stay private and must be rerendered after changes.
 
-## Want it installed and run for you?
+## Your first hour: ten things to ask for
 
-Enterprise DNA installs Integration Value for Claude Code for your business, migrates your Midaxo data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+1. Put our business name and colours on the steering pack.
+2. Import a small project export as a preview.
+3. Reconcile the imported project IDs.
+4. Record an acquisition close with evidence.
+5. Add our first day-one checklist.
+6. Link the work that must finish first.
+7. Record a monthly saving and its implementation cost.
+8. Correct a claim and show why it needs another review.
+9. Draft the steering meeting pack.
+10. Add our internal integration reference with /customise.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=midaxo)
-- Read more: [enterprisedna.co/omni/instead-of/midaxo](https://enterprisedna.co/omni/instead-of/midaxo?utm_source=github&utm_medium=readme&utm_campaign=midaxo)
+## Scope and operation
 
-## License
+This is an integration and benefit-evidence desk. Midaxo also provides sourcing, diligence, document controls and broader collaboration. This build has no hosted document room or user authentication. [Operations](docs/operations.md) explains access, backups, money, baseline rules and deployment. [Compliance](docs/compliance.md) cites evidence checks and their limits. [Why no front end](docs/why-no-front-end.md) explains the screen differences. [Research](docs/research.md) records the selection evidence. Hosting, agent subscriptions and operations remain costs.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+MIT. Not affiliated with Midaxo or Anthropic.
