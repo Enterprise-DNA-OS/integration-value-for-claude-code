@@ -65,6 +65,15 @@ try{
  ok((await run('detail',{acquisition:a.id})).notes.length===1);
  await run('add-task',{acquisition:a.id,name:'Confirm supplier transfer',workstream:'Operations',owner:actor,due:'2026-11-01',actor});
  await fail('update-task',{task:'Confirm supplier transfer',actor,reason:'Check'},/Ambiguous tasks/);
+ await fail('close-acquisition',{acquisition:a.id,date:'2099-01-01',evidence:'test://future',actor},/future/);
+ const future=await run('add-initiative',{acquisition:a.id,name:'Future benefit',owner:actor,kind:'saving',actor});
+ await run('plan-benefit',{initiative:future.id,period:'2099-01-01',amount:'10',actor});
+ await run('record-actual',{initiative:future.id,period:'2099-01-01',amount:'10',evidence:'test://premature',reason:'Premature claim',actor});
+ await fail('review-benefit',{initiative:future.id,period:'2099-01-01',actor:'Reviewer'},/Future period/);
+ const early=await run('add-initiative',{acquisition:'Kowhai Services acquisition',name:'Preclose claim',owner:actor,kind:'saving',actor});
+ await run('plan-benefit',{initiative:early.id,period,amount:'10',actor});
+ await run('record-actual',{initiative:early.id,period,amount:'10',evidence:'test://premature',reason:'Premature claim',actor});
+ await fail('review-benefit',{initiative:early.id,period,actor:'Reviewer'},/actual acquisition close/);
  const im={file:path.join(REPO_ROOT,'fixtures/midaxo-projects.csv'),mapping:path.join(REPO_ROOT,'fixtures/project-mapping.json')};
  ok((await run('import',{...im,'dry-run':true})).actions.every(x=>x.action==='insert'));
  ok((await run('acquisitions')).length===3);await run('import',{...im,actor});ok((await run('acquisitions')).length===5);
@@ -85,7 +94,7 @@ try{
  const draft=await run('draft-steering-pack',{acquisition:a.id});files.push(draft.file);ok(fs.readFileSync(draft.file,'utf8').includes('A recorded steering decision'));
  await db.close();db=null;
  for(const script of ['view','docs']){const result=spawnSync(process.execPath,[`scripts/${script}.mjs`],{cwd:REPO_ROOT,env:{...process.env,OUTPUT_DIR:temp},encoding:'utf8'});assert.equal(result.status,0,result.stderr);checks++;}
- for(const [args,status] of [[['acquisitions','--json'],0],[['tasks','--unknown'],1],[['detail','--acquisition=0','--json'],1]]){
+ for(const [args,status] of [[['acquisitions','--json'],0],[['tasks','--unknown'],1],[['detail','--acquisition=missing-acquisition','--json'],1]]){
   const result=spawnSync(process.execPath,['scripts/integration.mjs',...args],{cwd:REPO_ROOT,encoding:'utf8'});assert.equal(result.status,status,result.stderr);checks++;if(status===0)ok(Array.isArray(JSON.parse(result.stdout)));
  }
  ok(seen.size===Object.keys(commands).length);

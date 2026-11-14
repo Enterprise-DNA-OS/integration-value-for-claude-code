@@ -190,7 +190,7 @@ export async function execute(db,cmd,o={}){
 export function format(value){
  if(Array.isArray(value)){
   if(!value.length)return '  (none)';
-  const keys=Object.keys(value[0]);return table(value.map(row=>Object.fromEntries(Object.entries(row).map(([k,v])=>[k,k.endsWith('_cents')&&v!==null?(Number(v)/100).toFixed(2):v&&typeof v==='object'?JSON.stringify(v):v]))),keys.map(key=>({key,label:key.replace(/_cents$/, ''),width:70})));
+  const keys=Object.keys(value[0]).filter(k=>!['id','acquisition_id','initiative_id','task_id','prerequisite_id'].includes(k));return table(value.map(row=>Object.fromEntries(Object.entries(row).map(([k,v])=>[k,k.endsWith('_cents')&&v!==null?(Number(v)/100).toFixed(2):v&&typeof v==='object'?JSON.stringify(v):v]))),keys.map(key=>({key,label:key.replace(/_cents$/, '').replaceAll('_',' '),width:70})));
  }
  if(value&&typeof value==='object')return Object.entries(value).map(([k,v])=>`${k}\n${Array.isArray(v)||v&&typeof v==='object'?format(Array.isArray(v)?v:[v]):v}`).join('\n\n');
  return String(value);
